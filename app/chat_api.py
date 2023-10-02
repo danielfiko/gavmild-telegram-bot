@@ -5,8 +5,17 @@ class OpenaiError(Exception):
     pass
 
 
-def openai_api(prompt, sys_msg="", temp=1.0):
-    openai.api_key = "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"
+def read_secret(secret_name):
+    try:
+        with open(f"/run/secrets/{secret_name}", "r") as secret_file:
+            return secret_file.read().strip()
+    except IOError:
+        return None
+
+sys_msg = "You are a chatbot that reluctantly answers with a sarcastic responses, helping users with the correct use of chat commands. You do not ask if they need any further assistance."
+
+def openai_api(prompt, sys_msg=sys_msg, temp=1.0):
+    openai.api_key = read_secret("openai-token")
     try:
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",

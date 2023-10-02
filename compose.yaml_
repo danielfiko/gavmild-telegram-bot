@@ -1,0 +1,15 @@
+services:
+ gavmild_telegram:
+    build: .
+    restart: always
+    secrets:
+      - telegram-token
+      - bot-api-token
+    ports:
+      - 5006:5006
+
+secrets:
+  telegram-token:
+    file: secrets/telegram-token.txt
+  bot-api-token:
+    file: secrets/bot-api-token.txt
